@@ -96,7 +96,7 @@ const App = () => {
 
       <dialog ref={dialogRef} id="my_modal_1" className="modal z-50">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">Congratulation Deer!</h3>
+          <h3 className="font-bold text-lg">Congratulation !</h3>
 
           <div className="modal-action">
             <form method="dialog">
