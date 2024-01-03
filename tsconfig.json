@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "jsx": "react",
+    "outDir": "/public/dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "noImplicitAny": true
+  },
+  "include": ["src/**/*.tsx", "src/hooks/ruff.js", "src/context/theme.ts"]
+}
