@@ -112,19 +112,19 @@ const App = () => {
         <div className="flex justify-center mt-24 gap-5 ">
           <button
             onClick={() => getLevel("easy")}
-            className="px-2 py-3 text-xl bg-green-700 w-32 text-white rounded-md"
+            className="btn btn-success text-xl text-white "
           >
             Easy
           </button>
           <button
             onClick={() => getLevel("medium")}
-            className="px-2 py-3 text-xl bg-blue-700 w-32 text-white rounded-md"
+            className="btn btn-warning text-xl text-white "
           >
             Medium
           </button>
           <button
             onClick={() => getLevel("hard")}
-            className="px-2 py-3 text-xl bg-red-400 w-32 text-white rounded-md"
+            className="btn btn-error text-xl text-white"
           >
             Hard
           </button>

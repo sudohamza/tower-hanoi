@@ -43,9 +43,8 @@ export const blocksData = [
     column: 1,
     width: 64,
     blockWidth: "w-64",
-
-    bgColor: "bg-red-400",
-    border: "border-red-600",
+    border: "border-fuchsia-600",
+    bgColor: "bg-fuchsia-400",
     level: "hard",
   },
   {
@@ -53,8 +52,8 @@ export const blocksData = [
     column: 1,
     width: 80,
     blockWidth: "w-80",
-    bgColor: "bg-fuchsia-400",
-    border: "border-fuchsia-600",
+    border: "border-red-600",
+    bgColor: "bg-red-400",
     level: "hard",
   },
 ];
