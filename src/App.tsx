@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { blocksData } from "./data";
 
 interface Blocks {
   id: string;
   column: number;
-  row: number;
   width: number;
   bgColor: string;
   border: string;
@@ -14,15 +13,23 @@ interface Blocks {
 const App = () => {
   const [dragId, setDragId] = useState("");
   const [blocks, setBlocks] = useState<Blocks[]>(blocksData);
+  const [winModal, setWinModal] = useState(false);
   const winCondition = blocks.every((block) => block.column === 3);
+
+  const resetArray = () => {
+    let resetBlocks = blocksData.map((block) => (block.column = 1));
+  };
 
   const getLevel = (level: string) => {
     if (level === "hard") {
+      resetArray();
       setBlocks(blocksData);
     } else if (level === "medium") {
+      resetArray();
       let mediumBlocks = blocksData.filter((block) => block.level !== "hard");
       setBlocks(mediumBlocks);
     } else if (level === "easy") {
+      resetArray();
       let easyBlocks = blocksData.filter((block) => block.level === "easy");
       setBlocks(easyBlocks);
     }
@@ -73,16 +80,36 @@ const App = () => {
   const column2Blocks = blocks.filter((block) => block.column === 2);
   const column3Blocks = blocks.filter((block) => block.column === 3);
 
+  let dialogRef = useRef<HTMLDialogElement>(null);
+
   if (winCondition) {
     setTimeout(() => {
-      alert("you won");
+      if (dialogRef) {
+        dialogRef.current?.showModal();
+      }
     }, 100);
   }
 
   return (
     <div className="fixed inset-0 bg-slate-300">
+      {/* Win Modal */}
+
+      <dialog ref={dialogRef} id="my_modal_1" className="modal z-50">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Congratulation Deer!</h3>
+
+          <div className="modal-action">
+            <form method="dialog">
+              <button onClick={() => window.location.reload()} className="btn">
+                Restart
+              </button>
+            </form>
+          </div>
+        </div>
+      </dialog>
+
       <div className="h-full">
-        <div className="flex justify-center my-32 gap-5 ">
+        <div className="flex justify-center mt-24 gap-5 ">
           <button
             onClick={() => getLevel("easy")}
             className="px-2 py-3 text-xl bg-green-700 w-32 text-white rounded-md"
@@ -102,6 +129,12 @@ const App = () => {
             Hard
           </button>
         </div>
+        <div className="flex justify-center my-8">
+          <h1 className="text-4xl text-slate-800">
+            ------------------------------ Move Here to
+            Win----------------------------&gt;
+          </h1>
+        </div>
         <div className="flex gap-4 justify-center items-center">
           <div
             id="1"
@@ -119,7 +152,6 @@ const App = () => {
                   const item = {
                     id: block.id,
                     column: block.column,
-                    row: block.row,
                     with: block.width,
                   };
                   return (
@@ -150,7 +182,6 @@ const App = () => {
                   const item = {
                     id: block.id,
                     column: block.column,
-                    row: block.row,
                     with: block.width,
                   };
                   return (
@@ -181,7 +212,6 @@ const App = () => {
                   const item = {
                     id: block.id,
                     column: block.column,
-                    row: block.row,
                     with: block.width,
                   };
                   return (
@@ -196,6 +226,26 @@ const App = () => {
                   );
                 })}
             </div>
+          </div>
+        </div>
+        <div className="flex justify-center my-8">
+          <h1 className="text-4xl text-red-800">
+            ------------------------------ Some simple Rules
+            ----------------------------
+          </h1>
+        </div>
+        <div className="flex justify-center">
+          <div>
+            <li className="text-red-800">
+              Only one disc can be moved at a time.
+            </li>
+            <li className="text-red-800">
+              Only the top disc of one stack can be transferred to the top of
+              another stack or an empty box.
+            </li>
+            <li className="text-red-800">
+              Larger discs cannot be stacked over smaller ones.
+            </li>
           </div>
         </div>
       </div>
