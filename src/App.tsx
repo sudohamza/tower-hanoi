@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { blocksData } from "./data";
 
 interface Blocks {
@@ -13,11 +13,13 @@ interface Blocks {
 const App = () => {
   const [dragId, setDragId] = useState("");
   const [blocks, setBlocks] = useState<Blocks[]>(blocksData);
-  const [winModal, setWinModal] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const winCondition = blocks.every((block) => block.column === 3);
 
   const resetArray = () => {
-    let resetBlocks = blocksData.map((block) => (block.column = 1));
+    blocksData.forEach((block) => {
+      block.column = 1;
+    });
   };
 
   const getLevel = (level: string) => {
@@ -71,8 +73,8 @@ const App = () => {
       });
     }
 
-    console.log("Drop Column", dropColumn);
-    console.log("Drag ID :", dragId);
+    // console.log("Drop Column", dropColumn);
+    // console.log("Drag ID :", dragId);
     setBlocks(newBlocksState);
   };
 
@@ -80,51 +82,56 @@ const App = () => {
   const column2Blocks = blocks.filter((block) => block.column === 2);
   const column3Blocks = blocks.filter((block) => block.column === 3);
 
-  let dialogRef = useRef<HTMLDialogElement>(null);
-
   if (winCondition) {
     setTimeout(() => {
-      if (dialogRef) {
-        dialogRef.current?.showModal();
-      }
+      setIsOpen(true);
     }, 100);
   }
+
+  useEffect(() => {
+    console.log("New Version");
+  }, []);
 
   return (
     <div className="fixed inset-0 bg-slate-300">
       {/* Win Modal */}
-
-      <dialog ref={dialogRef} id="my_modal_1" className="modal z-50">
-        <div className="modal-box">
-          <h3 className="font-bold text-lg">Congratulation !</h3>
-
-          <div className="modal-action">
-            <form method="dialog">
-              <button onClick={() => window.location.reload()} className="btn">
+      {isOpen && (
+        <div
+          style={{ backgroundColor: "#00000080" }}
+          className="fixed inset-0 z-50 flex items-center justify-center"
+        >
+          <div className="bg-white rounded-xl shadow-lg w-full max-w-md p-6 mx-4">
+            <h3 className="font-bold text-lg mb-4">Congratulations!</h3>
+            <div className="flex justify-end">
+              <button
+                onClick={() => window.location.reload()}
+                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg transition"
+              >
                 Restart
               </button>
-            </form>
+            </div>
           </div>
         </div>
-      </dialog>
+      )}
 
       <div className="h-full">
         <div className="flex justify-center mt-24 gap-5 ">
           <button
+            type="button"
             onClick={() => getLevel("easy")}
-            className="btn btn-success text-xl text-white "
+            className=" cursor-pointer bg-green-500 hover:bg-green-600 text-white text-xl font-semibold px-4 py-2 rounded-lg transition"
           >
             Easy
           </button>
           <button
             onClick={() => getLevel("medium")}
-            className="btn btn-warning text-xl text-white "
+            className="cursor-pointer bg-yellow-500 hover:bg-yellow-600 text-white text-xl font-semibold px-4 py-2 rounded-lg transition"
           >
             Medium
           </button>
           <button
             onClick={() => getLevel("hard")}
-            className="btn btn-error text-xl text-white"
+            className="cursor-pointer bg-red-500 hover:bg-red-600 text-white text-xl font-semibold px-4 py-2 rounded-lg transition"
           >
             Hard
           </button>
@@ -148,7 +155,6 @@ const App = () => {
               {column1Blocks
                 .sort((a, b) => a.width - b.width)
                 .map((block) => {
-                  let count = 2;
                   const item = {
                     id: block.id,
                     column: block.column,
